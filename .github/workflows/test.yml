@@ -67,4 +67,7 @@ jobs:
     - name: Run E2E Tests
       env:
         TEST_E2E: true
-      run: mvn test -Dtest=E2EIntegrationTest
+      run: |
+        ANON_KEY=$(supabase status -o json | jq -r .anon_key)
+        AUTH_URL="http://localhost:54321"
+        mvn test -Dtest=E2EIntegrationTest -DSUPABASE_KEY=$ANON_KEY -DSUPABASE_URL=$AUTH_URL
